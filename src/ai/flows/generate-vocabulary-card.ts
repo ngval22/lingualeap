@@ -48,8 +48,55 @@ const generateExampleSentencesPrompt = ai.definePrompt({
     targetLanguage: z.string(),
   }),
   output: z.array(z.string()),
-  prompt: `You are a language teacher. Generate three example sentences using the word "{{word}}" in {{targetLanguage}}. Just return the sentences without any extra formatting or explanations.`,
+  prompt: `You are a language teacher. Generate three example sentences using the word "{{word}}" in {{targetLanguage}}, and their English translations in the following order: "3 {{targetLanguage}} sentences. 3 English translations of those sentences.". Try to generate sentences with different contexts or even with different meanings of the given word if possible. Each sentence should be on a newline. Just return the sentences without any extra formatting or explanations.`,
 });
+
+// Wrapper function to extract sentences and return only the array
+const generateExampleSentences = async (
+  input: { word: string; targetLanguage: string }
+): Promise<string[]> => {
+  // Call the prompt
+  const response = await generateExampleSentencesPrompt(input);
+
+  // Extract the content from the response
+  const content = response.message?.content;
+
+  // Validate content
+  if (!content) {
+    console.error('No content found in response:', response);
+    return [];
+  }
+
+  // Handle different content structures
+  let sentences: string[];
+  if (Array.isArray(content)) {
+    if (Array.isArray(content[0])) {
+      // Case: content is a nested array, e.g., [["sentence1", "sentence2", "sentence3"]]
+      sentences = content[0].filter((item): item is string => typeof item === 'string');
+    } else if (content.every((item) => typeof item === 'string')) {
+      // Case: content is an array of strings, e.g., ["sentence1", "sentence2", "sentence3"]
+      sentences = content as string[];
+    } else {
+      // Case: content is an array of objects, e.g., [{ text: "sentence1" }, { text: "sentence2" }]
+      sentences = content
+        .filter((item) => item && typeof item === 'object' && 'text' in item)
+        .map((item: any) => item.text)
+        .filter((text): text is string => typeof text === 'string');
+    }
+  } else {
+    console.error('Content is not an array:', content);
+    return [];
+  }
+
+  // Validate with Zod schema
+  try {
+    return z.array(z.string()).parse(sentences);
+  } catch (error) {
+    console.error('Sentences do not match expected schema:', sentences, error);
+    return [];
+  }
+};
+
 
 const generateVocabularyCardFlow = ai.defineFlow(
   {
@@ -59,16 +106,19 @@ const generateVocabularyCardFlow = ai.defineFlow(
   },
   async input => {
     const translationResult: Translation = await translateText(input.word, 'en');
-    const exampleSentences = await generateExampleSentencesPrompt(input);
+    const exampleSentences = await generateExampleSentences(input);
+    //console.log('Is array?', Array.isArray(exampleSentences));
+    console.log('exampleSentences :', exampleSentences);
 
-    const translatedSentences = await Promise.all(
-      exampleSentences.map(async sentence => {
-        const translation = await translateText(sentence, 'en');
-        return {sentence, translation: translation.translatedText};
-      })
-    );
+    const translatedSentences = [];
+    const splitSentences = exampleSentences[0].split('\n');
+    for (let i = 0; i < 3; i++) {
+        const translation = splitSentences[i+3];
+	translatedSentences.push({ sentence: splitSentences[i], translation: translation });
+    }
 
-    // Generate the image
+    console.log('translatedSentences:', translatedSentences);
+
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-exp',
       prompt: `Generate an image that represents the word: ${input.word}`,
