@@ -39,6 +39,9 @@ next-env.d.ts
 
 .genkit/*
 .env*
+.idx
+.vscode
+.modified
 
 # firebase
 public/_auth/*
