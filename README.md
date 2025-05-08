@@ -16,8 +16,8 @@ This is a Next.js application built with Firebase Studio, designed to help users
     ```
 
 2.  **Set up Environment Variables:**
-    Create a `.env.local` file in the root directory and add your Firebase project configuration:
-    ```.env.local
+    Create a `.env` file in the root directory and add your Firebase project configuration:
+    ```.env
     NEXT_PUBLIC_FIREBASE_API_KEY=YOUR_API_KEY
     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
     NEXT_PUBLIC_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
@@ -25,10 +25,9 @@ This is a Next.js application built with Firebase Studio, designed to help users
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=YOUR_MESSAGING_SENDER_ID
     NEXT_PUBLIC_FIREBASE_APP_ID=YOUR_APP_ID
 
-    # Add your Genkit/Google AI API Key if needed for AI features
+    # Add your Genkit/Google AI API Key for using Gemini
     GOOGLE_API_KEY=YOUR_GOOGLE_AI_API_KEY
     ```
-    Replace `YOUR_*` placeholders with your actual Firebase and AI credentials.
 
 3.  **Run the Development Server:**
     ```bash
@@ -66,9 +65,3 @@ This is a Next.js application built with Firebase Studio, designed to help users
 -   [Firebase](https://firebase.google.com/) (Authentication, Firestore Database)
 -   [Genkit](https://firebase.google.com/docs/genkit) (AI Flow Orchestration)
 -   [TypeScript](https://www.typescriptlang.org/)
-
-## Deployment
-
-Refer to the [Next.js deployment documentation](https://nextjs.org/docs/deployment) and [Firebase Hosting documentation](https://firebase.google.com/docs/hosting) for deployment options.
-
-      
