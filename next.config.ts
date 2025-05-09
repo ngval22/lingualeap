@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'coffective.com',
+        port: '',
+        pathname: '/**',
+      },
        // Add pattern for AI Platform generated images if needed (replace with actual pattern)
       // {
       //   protocol: 'https',

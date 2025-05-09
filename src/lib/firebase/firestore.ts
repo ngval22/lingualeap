@@ -22,6 +22,7 @@ const VOCAB_COLLECTION = 'vocabularyCards';
  */
 export async function saveVocabularyCard(userId: string, cardData: GenerateVocabularyCardOutput): Promise<string> {
   try {
+    console.log("SaveVocabularyCard called");
     const now = new Date();
     const cardToSave = {
       ...cardData,

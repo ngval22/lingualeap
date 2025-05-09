@@ -119,20 +119,20 @@ const generateVocabularyCardFlow = ai.defineFlow(
 
     console.log('translatedSentences:', translatedSentences);
 
-    const {media} = await ai.generate({
-      model: 'googleai/gemini-2.0-flash-exp',
-      prompt: `Generate an image that represents the word: ${input.word}`,
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'],
-      },
-    });
+    //const {media} = await ai.generate({
+    //  model: 'googleai/gemini-2.0-flash-exp',
+    //  prompt: `Generate an image that represents the word: ${input.word}`,
+    //  config: {
+    //    responseModalities: ['TEXT', 'IMAGE'],
+    //  },
+    //});
 
     return {
       word: input.word,
       targetLanguage: input.targetLanguage,
       translation: translationResult.translatedText,
       exampleSentences: translatedSentences,
-      imageUrl: media.url,
+      imageUrl: "https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg",
     };
   }
 );
