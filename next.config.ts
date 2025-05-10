@@ -22,6 +22,24 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'visittroisvierges.lu',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'st.hzcdn.com',
+        port: '',
+        pathname: '/**',
+      },
        // Add pattern for AI Platform generated images if needed (replace with actual pattern)
       // {
       //   protocol: 'https',

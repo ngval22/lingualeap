@@ -27,7 +27,7 @@ export function VocabularyCardDisplay({ card, isReviewMode = false }: Vocabulary
   };
 
   const cardClasses = cn(
-    "w-full h-full shadow-lg rounded-lg flex flex-col",
+    "w-full h-auto shadow-lg rounded-lg flex flex-col",
     isReviewMode ? "bg-card border-2 border-primary" : "bg-card", // Highlight border in review mode
      "cursor-pointer" // Add cursor pointer for flipping
   );
@@ -63,29 +63,35 @@ export function VocabularyCardDisplay({ card, isReviewMode = false }: Vocabulary
         </div>
         <Separator orientation="vertical" className="hidden md:block h-auto mx-4" />
          <Separator orientation="horizontal" className="block md:hidden my-4" />
-        <div className="w-full md:w-1/3 flex justify-center items-center">
-          {imageLoading && !imageError && <Skeleton className="h-32 w-full rounded-md" />}
-          {imageError && (
-              <div className="h-32 w-full rounded-md bg-muted flex flex-col items-center justify-center text-center p-2">
-                 <p className="text-xs text-muted-foreground">Image failed to load.</p>
-                 <p className="text-xs text-muted-foreground">Using placeholder.</p>
-              </div>
-          )}
-          <Image
-            src={displayCard.imageUrl}
-            alt={`AI generated image for ${displayCard.word}`}
-            width={300}
-            height={200}
-            className={`rounded-md object-cover ${imageLoading || imageError ? 'hidden' : 'block'}`}
-            onLoad={() => setImageLoading(false)}
-            onError={() => {
-              setImageLoading(false);
-              setImageError(true);
-            }}
-            unoptimized={displayCard.imageUrl?.startsWith('data:')} // Avoid optimization for data URIs
-            data-ai-hint={`word image ${displayCard.word}`}
-          />
-        </div>
+	 <div className="w-full md:w-1/3 flex justify-center items-center aspect-[3/2]">
+  {imageLoading && !imageError && <Skeleton className="h-full w-full rounded-md" />}
+  {imageError && (
+    <div className="h-full w-full rounded-md bg-muted flex flex-col items-center justify-center text-center p-2">
+      <p className="text-xs text-muted-foreground">Image failed to load.</p>
+      <p className="text-xs text-muted-foreground">Using placeholder.</p>
+    </div>
+  )}
+  <Image
+
+    key={displayCard.imageUrl}
+    src={displayCard.imageUrl}
+    alt={`AI generated image for ${displayCard.word}`}
+    width={300}
+    height={200}
+    className={`rounded-md object-cover w-full h-auto ${imageLoading || imageError ? 'hidden' : 'block'}`}
+    onLoad={() => {
+      console.log('Image loaded:', displayCard.imageUrl);
+      setImageLoading(false);
+    }}
+    onError={() => {
+      console.error('Image failed to load:', displayCard.imageUrl);
+      setImageLoading(false);
+      setImageError(true);
+    }}
+    unoptimized={displayCard.imageUrl?.startsWith('data:')}
+    data-ai-hint={`word image ${displayCard.word}`}
+  />
+</div>
       </CardContent>
        {isReviewMode && (
           <CardFooter className="p-2 text-center">

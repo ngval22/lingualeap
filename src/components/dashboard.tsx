@@ -48,7 +48,7 @@ export function Dashboard() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-full">
         <Sidebar>
           <SidebarHeader className="p-4">
              <div className="flex items-center gap-2">
@@ -96,8 +96,8 @@ export function Dashboard() {
            {/* Removed Settings button from footer */}
         </Sidebar>
         <SidebarInset className="flex-1 p-6 bg-secondary">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold">
+          <div className="flex items-center justify-center mb-6">
+            <h2 className="text-2xl font-semibold text-center">
               {activeSection === 'add' && 'Add New Vocabulary Word'}
               {activeSection === 'review' && 'Review Your Cards'}
               {activeSection === 'deck' && 'Your Vocabulary Deck'}

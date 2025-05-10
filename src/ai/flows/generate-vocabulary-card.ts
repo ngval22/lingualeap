@@ -117,22 +117,23 @@ const generateVocabularyCardFlow = ai.defineFlow(
 	translatedSentences.push({ sentence: splitSentences[i], translation: translation });
     }
 
+
     console.log('translatedSentences:', translatedSentences);
 
-    //const {media} = await ai.generate({
-    //  model: 'googleai/gemini-2.0-flash-exp',
-    //  prompt: `Generate an image that represents the word: ${input.word}`,
-    //  config: {
-    //    responseModalities: ['TEXT', 'IMAGE'],
-    //  },
-    //});
+    const {media} = await ai.generate({
+      model: 'googleai/gemini-2.0-flash-exp',
+      prompt: `Generate an image that represents the word, image size must be less than 500 kb but do not generate an image of the letters of the word, generate image of an object, or concept that this word represents: ${input.word}`,
+      config: {
+        responseModalities: ['TEXT', 'IMAGE'],
+      },
+    });
 
     return {
       word: input.word,
       targetLanguage: input.targetLanguage,
       translation: translationResult.translatedText,
       exampleSentences: translatedSentences,
-      imageUrl: "https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg",
+      imageUrl: "",
     };
   }
 );
